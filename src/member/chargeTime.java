@@ -8,6 +8,10 @@ import java.util.Scanner;
 import oracle.jdbc.OracleTypes;
 
 public class chargeTime {
+	/**
+	 * 회원의 사용시간을 충전하는 메뉴입니다.
+	 * @param 회원정보
+	 */
 	public void chargeMenu(MemberUser memberuser) {
 		while(true) {
 			System.out.println("\t\t\t〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓");
@@ -37,7 +41,11 @@ public class chargeTime {
 			}
 	}
 }
-	
+	/**
+	 * 회원의 시간을 입력한 금액만큼 충전하는 메소드입니다.
+	 * @param 회원정보
+	 * @param 충전할 금액
+	 */
 	public void chargeTime(MemberUser memberuser,String money){
 	
 				Connection conn = null;
@@ -62,6 +70,7 @@ public class chargeTime {
 					int result = stat.getInt(3) ; 
 					
 				if(result == 1 && Integer.parseInt(money)>0) {
+					procpaymoney(money);
 					System.out.println("\t\t\t충전이 완료 되었습니다.");
 					MemberUser User = new MemberUser();
 					User.MemberSitPc(memberuser);
@@ -74,6 +83,45 @@ public class chargeTime {
 					System.out.println("\t\t\t충전 실패!");
 				}
 		}	
-		
+	
+	/**
+	 * 회원이 사용한 금액을 매출테이블에 저장하는 메소드입니다.
+	 * @param 수요
+	 */
+	public void procpaymoney(String money) {
+			Connection conn = null;
+			CallableStatement stat = null;
+			DBUtil util = new DBUtil();
+			ResultSet rs = null;
+			Scanner scan = new Scanner(System.in);
+			
+			try {
+				conn = util.open("localhost","chproject","java1234");
+				String sql = "{ call procpaymoney(?,?) }";
+				stat = conn.prepareCall(sql);
+				
+				stat.setString(1, money);
+				stat.registerOutParameter(2, OracleTypes.NUMBER);
+				
+				stat.executeUpdate();
+				int result = stat.getInt(2);
+				
+				if(result == 1) {
+					System.out.println("\t\t\t결제가 완료되었습니다.");
+				}
+				
+				else {
+					System.out.println("\t\t\t결제 실패!");
+				}
+				conn.close();
+				stat.close();
+			} catch (Exception e) {
+				System.out.println("Ex07_CallableStatment.m5()");
+				e.printStackTrace();
+			}
+			
+		}
+	
+	
 	}	
 

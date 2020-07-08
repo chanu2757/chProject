@@ -9,6 +9,10 @@ import member.DBUtil;
 import oracle.jdbc.OracleTypes;
 
 public class pcManagement {
+	/**
+	 * 관리자가 PC를 관리하는 메뉴로 현재 사용중인 pc를 종료시킬 수 있습니다.
+	 * @author 김찬우
+	 */
 	public void pcManagement() {
 	while(true) {
 		Admin ad = new Admin();
@@ -41,6 +45,10 @@ public class pcManagement {
 		}//else
 	}
 }
+	/**
+	 * pc번호를 입력 받아 해당 pc를 종료시키는 메소드입니다.
+	 * @param pc번호
+	 */
 	public void procendpc(String pcnum) {
 			Connection conn = null;
 			CallableStatement stat = null;

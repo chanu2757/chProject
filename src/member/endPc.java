@@ -8,6 +8,11 @@ import java.util.Scanner;
 import oracle.jdbc.OracleTypes;
 
 public class endPc {
+	/**
+	 * @author 김찬우
+	 * @param 회원정보객체
+	 * 사용자에게 사용을 종료할것인지 묻는 메소드입니다.
+	 */
 	public void Bye(MemberUser memberuser) {
 		while(true) {
 			Scanner sc = new Scanner(System.in);
@@ -38,6 +43,12 @@ public class endPc {
 			}//else
 		}
 	}
+	/**
+	 *
+	 * pc의 사용을 종료하는 메소드로
+	 * 로그아웃과 다르게 pc의 status와 회원번호가 0이됩니다.
+	 * @param 회원정보
+	 */
 		public void procendpc(MemberUser membernum) {
 				Connection conn = null;
 				CallableStatement stat = null;

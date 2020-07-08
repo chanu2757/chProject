@@ -8,7 +8,11 @@ import java.util.Scanner;
 import oracle.jdbc.OracleTypes;
 
 public class MemberMain {
-
+	/**
+	 * 회원이 사용하는 메인메뉴입니다.
+	 * @author 김찬우
+	 * @param 회원정보 객체
+	 */
 	public void MemberMainmenu(MemberUser memberUser) {
 		
 		Scanner scan = new Scanner(System.in);
@@ -39,7 +43,7 @@ public class MemberMain {
 			// 하는중
 			if (sel.equals("1")) {
 				doing do12 = new doing();
-				do12.doingmenu();		
+				do12.doingmenu(memberUser);		
 			} 
 			// 음식 주문
 			else if (sel.equals("2")) {
@@ -93,7 +97,10 @@ public class MemberMain {
 			}
 	
 	}//MemberMainmenu
-	
+	/**
+	 * 로그인한 회원의 정보를 출력하는 메소드
+	 * @param 회원 번호
+	 */
 	public void procprintloginfo(int membernum) {
 		Connection conn = null;
 		CallableStatement stat = null;
@@ -143,7 +150,10 @@ public class MemberMain {
 		}
 			
 		}//procprintloginfo
-	
+	/**
+	 * 사용자가 pc를 종료했을 경우 pc시간이 회원정보에 저장되는 메소드
+	 * @param membernum
+	 */
 	public void procremainingTime(int membernum) {
 		//종료시 남은시간을 저장하는 메소드
 			Connection conn = null;
@@ -173,6 +183,10 @@ public class MemberMain {
 				e.printStackTrace();
 			}
 	}
+	/**
+	 * 시간을 충전하는 메소드입니다.
+	 * @param 회원 정보 객체
+	 */
 		public void chargeTime(MemberUser memberuser){
 				
 				Connection conn = null;
@@ -214,7 +228,11 @@ public class MemberMain {
 		}	
 	
 	}//class
-
+	/**
+	 * 회원 정보를 저장하는 클래스입니다.
+	 * @author 김찬우
+	 *
+	 */
 	class loginfo{
 		String id;
 		int remaintime;

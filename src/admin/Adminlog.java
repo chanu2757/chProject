@@ -5,7 +5,10 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Scanner;
-
+/**
+ * @author 김찬우
+ * 관리자가 로그인 하는 화면
+ */
 public class Adminlog {
 public void login() {
 		while(true) {

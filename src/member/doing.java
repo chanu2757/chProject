@@ -8,10 +8,15 @@ import java.util.Scanner;
 import oracle.jdbc.OracleTypes;
 
 public class doing {
-	public void doingmenu() {
+	/**
+	 * @author 김찬우
+	 * pc방에서 할 활동을 정하는 메뉴입니다.
+	 * @param memberUser 
+	 */
+	public void doingmenu(MemberUser memberUser) {
 		while(true) {
 			System.out.println("\t\t\t〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓");
-			System.out.println("\t\t\t			하는중");
+			System.out.println("\t\t\t	하는중");
 			System.out.println("\t\t\t〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓");
 			System.out.println("\t\t\t1. 게임하기");
 			System.out.println("\t\t\t2. 영화보기");
@@ -25,19 +30,19 @@ public class doing {
 			
 			if(cho.equals("1")) {
 				//게임하기 
-				procPrintDoing(cho);
+				procPrintDoing(memberUser,cho);
 			}
 			else if(cho.equals("2")) {
 				//영화보기
-				procPrintDoing(cho);
+				procPrintDoing(memberUser,cho);
 			}
 			else if(cho.equals("3")) {
 				//드라마보기
-				procPrintDoing(cho);
+				procPrintDoing(memberUser,cho);
 			}
 			else if(cho.equals("4")) {
 				//음악듣기
-				procPrintDoing(cho);
+				procPrintDoing(memberUser,cho);
 			}
 			else if(cho.equals("0")) {
 				// 이전으로 
@@ -45,8 +50,12 @@ public class doing {
 			}
 			}
 		}
-	
-public void procPrintDoing(String cho) {
+	/**
+	 * @author 김찬우
+	 *  장르번호를 입력받아 그 장르에 맞는 프로그램이 있으면 실행시키고 없으면 다운로드로 이동하는 메소드
+	 * @param 장르번호(= 메뉴번호)
+	 */
+public void procPrintDoing(MemberUser user,String cho) {
 		while(true) {
 		Connection conn = null;
 		CallableStatement stat = null;
@@ -81,12 +90,18 @@ public void procPrintDoing(String cho) {
 			stat.executeQuery();
 			rs = (ResultSet)stat.getObject(2);
 				if(rs.next()) {
-				System.out.printf("\t\t\t%s을 실행합니다.\n",Do);
+				if(cho.equals("1")) {
+				System.out.printf("\t\t\t%s을(를) 실행합니다.\n",Do);
+				}
+				else {
+					System.out.printf("\t\t\t%s을(를) 재생합니다.\n",Do);
+				}
 				//pc테이블의 하는중에 업데이트 메소드
-				procUpdatepcDoing(Do);
+				procUpdatepcDoing(user,Do);
 				
 				break;
 			}
+			// 회원이 입력한 활동이 없을 경우 다운받을지 여부를 확인하고 다운을받거나 메뉴로 돌아감
 			else if(!rs.next()) {
 				System.out.printf("\t\t\t%s이 없습니다.\n",Do);
 				System.out.println("\t\t\t〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓");
@@ -117,7 +132,12 @@ public void procPrintDoing(String cho) {
 		}
 		}
 	}
-
+/**
+ * @author 김찬우
+ * 회원이 실행시킨 활동명과 그 활동의 카테고리번호를 입력받아 DB에 저장하는 메소드
+ * @param activity 활동명
+ * @param category 카테고리번호
+ */
 private void procAddDoing(String activity,String category) {
 	Connection conn = null;
 		CallableStatement stat = null;
@@ -152,7 +172,12 @@ private void procAddDoing(String activity,String category) {
 		}
 		
 	}
-public void procUpdatepcDoing(String activity) {
+/**
+ * @author 김찬우
+ * 입력한 활동을 pc테이블에 업로드해 현재 활동을 기록하는 메소드
+ * @param activity 활동명
+ */
+public void procUpdatepcDoing(MemberUser user,String activity) {
 	Connection conn = null;
 		CallableStatement stat = null;
 		DBUtil util = new DBUtil();
@@ -163,7 +188,7 @@ public void procUpdatepcDoing(String activity) {
 			String sql = "{ call procUpdatepcDoing(?,?,?) }";
 			stat = conn.prepareCall(sql);
 			
-			stat.setInt(1, 1); //회원번호
+			stat.setInt(1, user.getNum()); //회원번호
 			stat.setString(2, activity);
 			stat.registerOutParameter(3, OracleTypes.NUMBER);
 			
